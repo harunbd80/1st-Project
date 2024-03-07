@@ -1,7 +1,9 @@
 from django.shortcuts import render
-
 from django.views import View
-from . models import product
+from . models import  product
+from . forms import CustomerRegistrationForm
+from django.contrib import messages
+
 # Create your views here.
 class productView(View):
   def get(self,request):
@@ -46,8 +48,17 @@ def lehenga(request,data=None):
 def login(request):
      return render(request, 'Shop/login.html')
 
-def customerregistration(request):
- return render(request, 'Shop/customerregistration.html')
+class CustomerRegistrationView(View):
+ def get(self, request):
+  form = CustomerRegistrationForm()
+  return render(request, 'Shop/customerregistration.html', {'form': form})
+ def post(self, request):
+  form = CustomerRegistrationForm(request.POST)
+  if form.is_valid():
+   form.save()
+   messages.success(request,'Congratuolation Succesfully Registration Done!!!')
+  return render(request, 'Shop/customerregistration.html',{'form': form})
+  
 
 def checkout(request):
  return render(request, 'Shop/checkout.html')
