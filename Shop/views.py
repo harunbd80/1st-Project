@@ -43,7 +43,7 @@ def lehenga(request,data=None):
    lehengas=product.objects.filter(cetagory='k')
  elif data=='Arong' or data=='Sara':
    lehengas=product.objects.filter(cetagory='k').filter(brand=data)
- return render(request, 'Shop/lehenga.html',{'lehangas':lehengas})
+ return render(request, 'Shop/lehenga.html',{'lehanga':lehengas})
 
 def login(request):
      return render(request, 'Shop/login.html')
