@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
-from . models import  product,customer
+from . models import  product,customer,Cart
 from . forms import CustomerRegistrationForm,customerprofile
 from django.contrib import messages
 
@@ -21,7 +21,11 @@ class productDetialView(View):
    return render(request, 'Shop/productdetail.html',{'produc_d':product_detail})
 
 def add_to_cart(request):
- return render(request, 'Shop/addtocart.html')
+ user=request.user
+ product_id=request.GET.get('prod_id')
+ Product=product.objects.get(id=product_id)
+ Cart(user=user,product=Product).save()
+ return redirect('/cart')
 
 def buy_now(request):
  return render(request, 'Shop/buynow.html')
@@ -85,3 +89,9 @@ class CustomerRegistrationView(View):
 
 def checkout(request):
  return render(request, 'Shop/checkout.html')
+
+def Show_cart(request):
+  if request.user.is_authenticated:
+    user=request.user
+    cart=Cart.objects.filter(user=user)
+    return render (request,'Shop/addtocart.html',{'carts':cart})
